@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -7,12 +8,17 @@ public class PlayerShip : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 12f;
     [SerializeField] float _turnSpeed = 3f;
+    public ParticleSystem Sparkles;
 
     Rigidbody _rb = null;
-
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        ParticleSystem Sparkles = GetComponent<ParticleSystem>();
+    }
+    private void Start()
+    {
+        Sparkles.Stop();
     }
     private void FixedUpdate()
     {
@@ -23,7 +29,7 @@ public class PlayerShip : MonoBehaviour
     // use forces to build momentum forward/backward
     void MoveShip()
     {
-        // S/Down = -1, W/Up = 1, None = 0. Scale by moveSpeed
+        // S/Down = -1, W/Up = 1, None = 0. Scale by moveSpeed 
         float moveAmountThisFrame = Input.GetAxisRaw("Vertical") * _moveSpeed;
         // combine our direction with our calculated amount
         Vector3 moveDirection = transform.forward * moveAmountThisFrame;
@@ -44,5 +50,37 @@ public class PlayerShip : MonoBehaviour
     {
         Debug.Log("Player has been killed!");
         this.gameObject.SetActive(false);
+    }
+    private void Update()
+    {
+        
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Sparkles.Play();
+        }
+        if(Input.GetKeyUp(KeyCode.W))
+        {
+            Sparkles.Stop();
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Sparkles.Play();
+        }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            Sparkles.Stop();
+        }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            _moveSpeed = _moveSpeed + 0.2f;
+        }
+        if (Input.GetKey(KeyCode.E))
+        {
+            _moveSpeed = _moveSpeed - 0.2f;
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 }
