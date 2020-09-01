@@ -78,9 +78,6 @@ public class PlayerShip : MonoBehaviour
         {
             _moveSpeed = _moveSpeed - 0.2f;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
+        
     }
 }
