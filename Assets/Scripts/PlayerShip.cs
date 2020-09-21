@@ -8,18 +8,25 @@ public class PlayerShip : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 12f;
     [SerializeField] float _turnSpeed = 3f;
+    [Header("Feedback")]
+    [SerializeField] TrailRenderer _trail = null;
+
     public ParticleSystem Sparkles;
 
     Rigidbody _rb = null;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         ParticleSystem Sparkles = GetComponent<ParticleSystem>();
+        
     }
+
     private void Start()
     {
         Sparkles.Stop();
     }
+
     private void FixedUpdate()
     {
         MoveShip();
@@ -46,11 +53,13 @@ public class PlayerShip : MonoBehaviour
         // spin the rigidbody
         _rb.MoveRotation(_rb.rotation * turnOffset);
     }
+
     public void Kill()
     {
         Debug.Log("Player has been killed!");
         this.gameObject.SetActive(false);
     }
+
     private void Update()
     {
         
@@ -79,5 +88,16 @@ public class PlayerShip : MonoBehaviour
             _moveSpeed = _moveSpeed - 0.2f;
         }
         
+    }
+
+    public void SetSpeed(float speedChange)
+    {
+        _moveSpeed += speedChange;
+        //TODO audio/visuals
+    }
+
+    public void SetBoosters(bool activateState)
+    {
+        _trail.enabled = activateState;
     }
 }
