@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameInput : MonoBehaviour
 {
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Backspace))
@@ -16,7 +17,9 @@ public class GameInput : MonoBehaviour
             Application.Quit();
         }
     }
-    void ReloadLevel()
+  
+  
+    public void ReloadLevel()
     {
         int activeSceneIndex =
             SceneManager.GetActiveScene().buildIndex;

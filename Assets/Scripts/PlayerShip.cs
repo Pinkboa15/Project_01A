@@ -8,18 +8,22 @@ public class PlayerShip : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 12f;
     [SerializeField] float _turnSpeed = 3f;
+    [SerializeField] int _scaleSize = 2;
     [Header("Feedback")]
     [SerializeField] TrailRenderer _trail = null;
-
+    public bool alive = true;
     public ParticleSystem Sparkles;
-
+    [SerializeField] GameObject gameController = null;
+    [SerializeField] GameObject _visualsToDeactivate = null;
+    Collider _colliderToDeactive = null;
     Rigidbody _rb = null;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         ParticleSystem Sparkles = GetComponent<ParticleSystem>();
-        
+        GameObject gameController = GetComponent<GameObject>();
+        _colliderToDeactive = GetComponent<Collider>();
     }
 
     private void Start()
@@ -57,40 +61,19 @@ public class PlayerShip : MonoBehaviour
     public void Kill()
     {
         Debug.Log("Player has been killed!");
-        this.gameObject.SetActive(false);
-    }
+        Sparkles.Play();
+        _colliderToDeactive.enabled = false;
+        _visualsToDeactivate.SetActive(false);
+        StartCoroutine(PowerupSequence(gameController));
 
-    private void Update()
+    }
+    IEnumerator PowerupSequence(GameObject controller)
     {
-        
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            Sparkles.Play();
-        }
-        if(Input.GetKeyUp(KeyCode.W))
-        {
-            Sparkles.Stop();
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Sparkles.Play();
-        }
-        if (Input.GetKeyUp(KeyCode.S))
-        {
-            Sparkles.Stop();
-        }
-        if (Input.GetKey(KeyCode.Q))
-        {
-            _moveSpeed = _moveSpeed + 0.2f;
-        }
-        if (Input.GetKey(KeyCode.E))
-        {
-            _moveSpeed = _moveSpeed - 0.2f;
-        }
-        
+        yield return new WaitForSeconds(2);
+        Restart(gameController);
     }
 
-    public void SetSpeed(float speedChange)
+        public void SetSpeed(float speedChange)
     {
         _moveSpeed += speedChange;
         //TODO audio/visuals
@@ -99,5 +82,19 @@ public class PlayerShip : MonoBehaviour
     public void SetBoosters(bool activateState)
     {
         _trail.enabled = activateState;
+    }
+    public void SetSize(int sizeChange)
+    {
+        _scaleSize /= sizeChange;
+        gameObject.transform.localScale = new Vector3(_scaleSize, _scaleSize, _scaleSize);
+    }
+    public void BacktoNormalSize(int sizeChange)
+    {
+        _scaleSize *= sizeChange;
+        gameObject.transform.localScale = new Vector3(_scaleSize, _scaleSize, _scaleSize);
+    }
+    public void Restart(GameObject controller)
+    {
+        controller.Reload();
     }
 }
