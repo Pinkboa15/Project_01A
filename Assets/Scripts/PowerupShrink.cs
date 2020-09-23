@@ -10,6 +10,7 @@ public class PowerupShrink : MonoBehaviour
 
     [Header("Setup")]
     [SerializeField] GameObject _visualsToDeactivate = null;
+    [SerializeField] AudioClip _powerupSound = null;
 
     Collider _colliderToDeactive = null;
     bool _poweredUp = false;
@@ -65,6 +66,7 @@ public class PowerupShrink : MonoBehaviour
 
     public void DisableObject()
     {
+        AudioHelper.PlayClip2D(_powerupSound, 1);
         // disable collider, so it can't be retriggered
         _colliderToDeactive.enabled = false;
         // disable visuals, to simulate deactivated

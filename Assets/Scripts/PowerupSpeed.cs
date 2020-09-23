@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.WSA;
+
 
 public class PowerupSpeed : MonoBehaviour
 {
     [Header("Powerup Settings")]
     [SerializeField] float _speedIncreaseAmount = 20;
     [SerializeField] float _powerupDuration = 5;
+    
 
     [Header("Setup")]
     [SerializeField] GameObject _visualsToDeactivate = null;
+    [SerializeField] AudioClip _powerupSound = null;
 
     Collider _colliderToDeactive = null;
     bool _poweredUp = false;
@@ -76,6 +78,7 @@ public class PowerupSpeed : MonoBehaviour
 
     public void DisableObject()
     {
+        AudioHelper.PlayClip2D(_powerupSound, 1);
         // disable collider, so it can't be retriggered
         _colliderToDeactive.enabled = false;
         // disable visuals, to simulate deactivated
@@ -85,6 +88,7 @@ public class PowerupSpeed : MonoBehaviour
 
     public void EnableObject()
     {
+        
         // enable collider, so it can be retriggered
         _colliderToDeactive.enabled = true;
         // enable visuals again, to draw player attention

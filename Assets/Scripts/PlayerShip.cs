@@ -11,19 +11,18 @@ public class PlayerShip : MonoBehaviour
     [SerializeField] int _scaleSize = 2;
     [Header("Feedback")]
     [SerializeField] TrailRenderer _trail = null;
-    public bool alive = true;
     public ParticleSystem Sparkles;
-    [SerializeField] GameObject gameController = null;
+    [SerializeField] GameInput gameController = null;
     [SerializeField] GameObject _visualsToDeactivate = null;
-    Collider _colliderToDeactive = null;
+    [SerializeField] AudioClip _deathSound = null;
+    [SerializeField] AudioClip _winSound = null;
     Rigidbody _rb = null;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         ParticleSystem Sparkles = GetComponent<ParticleSystem>();
-        GameObject gameController = GetComponent<GameObject>();
-        _colliderToDeactive = GetComponent<Collider>();
+        GameInput gameController = GetComponent<GameInput>();
     }
 
     private void Start()
@@ -61,19 +60,29 @@ public class PlayerShip : MonoBehaviour
     public void Kill()
     {
         Debug.Log("Player has been killed!");
-        Sparkles.Play();
-        _colliderToDeactive.enabled = false;
+        _moveSpeed = 0;
+        _turnSpeed = 0;
+        this.gameObject.transform.position = this.gameObject.transform.position;
         _visualsToDeactivate.SetActive(false);
+        Sparkles.Play();
+        gameController.GameOver();
+        AudioHelper.PlayClip2D(_deathSound, 1);
+        //this.gameObject.SetActive(false);
         StartCoroutine(PowerupSequence(gameController));
-
     }
-    IEnumerator PowerupSequence(GameObject controller)
+    public void PassedFinishLine()
     {
-        yield return new WaitForSeconds(2);
-        Restart(gameController);
+        _visualsToDeactivate.SetActive(false);
+        AudioHelper.PlayClip2D(_winSound, 1);
+        gameController.Win();
+    }
+    IEnumerator PowerupSequence(GameInput controller)
+    {
+        yield return new WaitForSeconds(3);
+        controller.ReloadLevel();
     }
 
-        public void SetSpeed(float speedChange)
+    public void SetSpeed(float speedChange)
     {
         _moveSpeed += speedChange;
         //TODO audio/visuals
@@ -92,9 +101,5 @@ public class PlayerShip : MonoBehaviour
     {
         _scaleSize *= sizeChange;
         gameObject.transform.localScale = new Vector3(_scaleSize, _scaleSize, _scaleSize);
-    }
-    public void Restart(GameObject controller)
-    {
-        controller.Reload();
     }
 }

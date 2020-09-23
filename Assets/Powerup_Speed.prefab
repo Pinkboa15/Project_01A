@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2488987192417340002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 2488987192746479836}
   m_Father: {fileID: 2488987193057147345}
@@ -58,7 +58,7 @@ Transform:
   m_GameObject: {fileID: 2488987192746479835}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 2488987192417340003}
   m_RootOrder: 0
@@ -171,3 +171,4 @@ MonoBehaviour:
   _speedIncreaseAmount: 20
   _powerupDuration: 5
   _visualsToDeactivate: {fileID: 2488987192417340002}
+  _powerupSound: {fileID: 8300000, guid: ddf0aefa61c268541b81cea5b9c72027, type: 3}
